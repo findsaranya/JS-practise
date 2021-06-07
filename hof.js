@@ -46,12 +46,34 @@ function ownLoop (start,test,update,body){
 }
 ownLoop(3, n => n > 0, n => n - 1, console.log);
 
-function every(array, test) {
+function every(array, predicate) {
   for(let i = 0; i<array.length ; i++){
-       if(test(array[i])) return true;
-
-       return false;
+   
+       if(!predicate(array[i])) return false;   
   }
+   return true;
+}
+function every2(array,predicate){
+  return !array.some( n => predicate(n))
 }
 console.log(every([1, 3, 5], n => n < 10));
 console.log(every([2, 4, 16], n => n < 10));
+console.log(every([], n => n < 10));
+
+function speak(line) {
+  console.log(this);
+  console.log(`The ${this.type} rabbit says '${line}'`);
+}
+let whiteRabbit = {type: "white", speak};
+let hungryRabbit = {type: "hungry", speak};
+
+whiteRabbit.speak("Oh my ears and whiskers, " +
+                  "how late it's getting!");
+
+                  speak.call(hungryRabbit, "Burp!");
+// → The hungry rabbit says 'Burp!'
+function normalize() {
+  console.log(this)
+  console.log(this.coords.map(n => n / this.length));
+}
+normalize.call({coords: [0, 2, 3], length: 5});
